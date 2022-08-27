@@ -18,7 +18,7 @@ export class SessionSerializer extends PassportSerializer {
 
   async deserializeUser(user: User, done: Done) {
     try {
-      const userDatabase = await this.userService.findUser(user.discordId);
+      const userDatabase = await this.userService.findUser(user.username); //In the cookie we search by username
       return userDatabase ? done(null, userDatabase) : done(null, null);
     } catch (error) {
       done(error, null);

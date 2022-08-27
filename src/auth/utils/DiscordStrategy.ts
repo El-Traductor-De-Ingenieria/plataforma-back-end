@@ -23,6 +23,7 @@ export class DiscordStrategy extends PassportStrategy(Strategy) {
 
     return this.authService.validateUser({
       discordId: profile.id,
+      username: profile.username,
     });
   }
 }

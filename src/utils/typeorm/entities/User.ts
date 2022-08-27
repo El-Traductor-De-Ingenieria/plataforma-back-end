@@ -7,4 +7,7 @@ export class User {
 
   @Column({ unique: true, name: 'discord_id' })
   discordId: string;
+
+  @Column({ unique: true })
+  username: string;
 }

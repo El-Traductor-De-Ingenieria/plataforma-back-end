@@ -11,16 +11,30 @@ export class UserService implements IUserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  createUser(details: UserDetails) {
+  async createUser(details: UserDetails) {
     console.log('Create User');
+    let userDatabase = await this.findUser(details.username);
+    let id = 1;
+    while (userDatabase != null) {
+      console.log(userDatabase);
+      details.username = details.username + id;
+      userDatabase = await this.findUser(details.username);
+      id++;
+    }
     const user = this.userRepository.create({
       discordId: details.discordId,
+      username: details.username,
     });
 
     return this.userRepository.save(user);
   }
 
-  findUser(discordId: string) {
+  findUser(username: string) {
+    console.log('Find User');
+    return this.userRepository.findOne({ where: [{ username: username }] });
+  }
+
+  findUserByDiscordId(discordId: string) {
     console.log('Find User');
     return this.userRepository.findOne({ where: [{ discordId: discordId }] });
   }

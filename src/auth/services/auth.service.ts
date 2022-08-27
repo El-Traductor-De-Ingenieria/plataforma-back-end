@@ -11,7 +11,7 @@ export class AuthService implements IAuthService {
   ) {}
 
   async validateUser(details: UserDetails) {
-    const user = await this.userService.findUser(details.discordId);
+    const user = await this.userService.findUserByDiscordId(details.discordId); //On the oath validator we use the discord id, because an username could have a username but doesn't have a discord linked
     return user || this.userService.createUser(details);
   }
 }
