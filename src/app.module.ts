@@ -21,6 +21,13 @@ import { PassportModule } from '@nestjs/passport';
       port: 3306,
       synchronize: true, //TODO: Esto tiene que estar en false cuando el proyecto se lance
       entities: entities,
+      ssl: process.env.SSL_CERT,
+      extra: {
+        ssl: {
+          ca: process.env.SSL_CERT,
+          rejectUnauthorized: false,
+        },
+      },
     }),
     AuthModule,
     UserModule,

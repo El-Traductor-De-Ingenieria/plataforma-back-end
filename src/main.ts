@@ -10,7 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const sessionRepository = app.get(Connection).getRepository(Session);
 
-  app.setGlobalPrefix('api')
+  app.setGlobalPrefix('api');
   app.use(
     session({
       secret: process.env.COOKIE_SECRET,
