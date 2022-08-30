@@ -6,3 +6,9 @@ export type UserDetails = {
 };
 
 export type Done = (error: Error, user: User) => void;
+
+export enum DbFileType {
+  LINK = 'link',
+  TEXT = 'text',
+  FILE = 'file',
+}

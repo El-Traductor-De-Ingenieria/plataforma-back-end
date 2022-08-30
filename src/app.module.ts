@@ -5,6 +5,8 @@ import { entities } from './utils/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PassportModule } from '@nestjs/passport';
+import { RepositoryModule } from './repository/repository.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -29,8 +31,12 @@ import { PassportModule } from '@nestjs/passport';
         },
       },
     }),
+    MulterModule.register({
+      dest: './uploads',
+    }),
     AuthModule,
     UserModule,
+    RepositoryModule,
   ],
   controllers: [],
   providers: [],
