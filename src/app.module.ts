@@ -23,13 +23,15 @@ import { MulterModule } from '@nestjs/platform-express';
       port: 3306,
       synchronize: true, //TODO: Esto tiene que estar en false cuando el proyecto se lance
       entities: entities,
-      ssl: process.env.SSL_CERT,
-      extra: {
-        ssl: {
-          ca: process.env.SSL_CERT,
-          rejectUnauthorized: false,
-        },
-      },
+      ssl: process.env.SSL_CERT ? true : false,
+      extra: process.env.SSL_CERT
+        ? {
+            ssl: {
+              ca: process.env.SSL_CERT,
+              rejectUnauthorized: false,
+            },
+          }
+        : null,
     }),
     MulterModule.register({
       dest: './uploads',
