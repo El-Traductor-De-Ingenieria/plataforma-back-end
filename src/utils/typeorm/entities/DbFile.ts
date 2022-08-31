@@ -26,11 +26,11 @@ export class DbFile {
   @Column({ type: 'varchar', length: '128', nullable: true, unique: true })
   filePath?: string;
 
-  @Column({ type: 'varchar', length: '256', nullable: true })
-  fileName?: string;
+  @Column({ type: 'varchar', length: '256' })
+  fileName: string;
 
-  @Column({ type: 'varchar', length: '64', unique: true, nullable: true })
-  fileHash?: string;
+  @Column({ type: 'varchar', length: '64', unique: true })
+  fileHash: string;
 
   @Column({ type: 'bool', default: false })
   approved: boolean;

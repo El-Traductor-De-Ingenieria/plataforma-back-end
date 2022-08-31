@@ -7,6 +7,7 @@ export interface IRepositoryService {
   newFileTypeTextOrUrl(
     textOrUrl: string,
     isUrl: boolean,
+    name: string,
     user: User,
   ): Promise<DbFile | null>;
   newFileTypeFile(

@@ -24,11 +24,30 @@ export class RepositoryService implements IRepositoryService {
     return this.dbFileRepository.findOneBy({ fileHash: hash });
   }
 
-  newFileTypeTextOrUrl(textOrUrl: string, isUrl: boolean, user: User) {
-    if (textOrUrl.length < 1024 || isUrl) {
+  async newFileTypeTextOrUrl(
+    textOrUrl: string,
+    isUrl: boolean,
+    name: string,
+    user: User,
+  ) {
+    if (textOrUrl.length <= 1024 || isUrl) {
+      const hash = createHash('sha256');
+      hash.update(textOrUrl);
+      const digest = hash.digest('hex');
+
+      const fileFound = await this.dbFileRepository.findOneBy({
+        fileHash: digest,
+      });
+
+      if (fileFound != null) {
+        return fileFound;
+      }
+
       const file = this.dbFileRepository.create({
         type: isUrl ? DbFileType.LINK : DbFileType.TEXT,
         textOrUrl: textOrUrl,
+        fileName: name,
+        fileHash: digest,
         uploaderId: user.id,
       });
 
