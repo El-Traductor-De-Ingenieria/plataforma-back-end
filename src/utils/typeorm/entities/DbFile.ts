@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -20,12 +21,14 @@ export class DbFile {
   @CreateDateColumn()
   uploadDate: Date;
 
+  @Index({ fulltext: true })
   @Column({ type: 'varchar', length: '1024', nullable: true })
   textOrUrl?: string;
 
   @Column({ type: 'varchar', length: '128', nullable: true, unique: true })
   filePath?: string;
 
+  @Index({ fulltext: true })
   @Column({ type: 'varchar', length: '256' })
   fileName: string;
 
@@ -34,4 +37,7 @@ export class DbFile {
 
   @Column({ type: 'bool', default: false })
   approved: boolean;
+
+  @Column({ type: 'numeric', default: 0 })
+  reputationPoints: number;
 }

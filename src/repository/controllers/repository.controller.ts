@@ -132,4 +132,24 @@ export class RepositoryController {
 
     return fileDb;
   }
+
+  @Get('search')
+  async searchFile(
+    @Body('query') query: string,
+    @Body('num') numEntries: number,
+    @Body('page') page: number,
+  ) {
+    const ret = await this.repositoryService.search(
+      query,
+      page && page != -1 ? page : 0,
+    );
+
+    const retLength =
+      numEntries != null ? (numEntries > 10 ? 10 : numEntries) : 10;
+    if (ret.length > retLength) {
+      return ret.slice(0, retLength - 1);
+    }
+
+    return ret;
+  }
 }
