@@ -12,7 +12,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class AuthController {
   @Get('login')
   @UseGuards(DiscordAuthGuard)
-  @ApiOperation({ summary: 'Iniciar sesión del usuario con discord' })
+  @ApiOperation({ summary: 'Iniciar sesión del usuario con discord, esto se establecerá una cookie de sesión' })
   @ApiResponse({ status: 200, description: 'Operación exitosa.' })
   login() {}
 
