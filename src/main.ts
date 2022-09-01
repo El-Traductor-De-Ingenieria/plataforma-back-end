@@ -6,6 +6,8 @@ import { TypeormStore } from 'connect-typeorm';
 import { Connection, getRepository } from 'typeorm';
 import { Session } from './utils/typeorm/entities/Session';
 
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const sessionRepository = app.get(Connection).getRepository(Session);
@@ -22,6 +24,15 @@ async function bootstrap() {
       store: new TypeormStore().connect(sessionRepository),
     }),
   );
+
+  //Configuración de la documentación de Swagger en la ruta: api/docs
+  const config = new DocumentBuilder()
+  .setTitle('Plataforma Backend API')
+  .setDescription('Esta API se comunicara mediante solicitudes HTTP para realizar consultas de base de datos, como crear, leer, actualizar y suprimir registros de los usuarios y recursos.')
+  .setVersion('1.0.0')
+  .build();
+const document = SwaggerModule.createDocument(app, config);
+SwaggerModule.setup('api/docs', app, document);
 
   // Se puede activar esto pero depende de la implementación del frontend
   /*app.enableCors({
