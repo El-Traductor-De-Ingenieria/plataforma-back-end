@@ -28,7 +28,7 @@ async function bootstrap() {
   //Configuración de la documentación de Swagger en la ruta: api/docs
   const config = new DocumentBuilder()
   .setTitle('Plataforma Backend API')
-  .setDescription('Esta API se comunicara mediante solicitudes HTTP para realizar consultas de base de datos, como crear, leer, actualizar y suprimir registros de los usuarios y recursos.')
+  .setDescription('Esta API REST se encarga de dar comunicación al FrontEnd con las bases de datos y los servicios integrados dentro del servidor.')
   .setVersion('v1')
   .build();
 const document = SwaggerModule.createDocument(app, config);
