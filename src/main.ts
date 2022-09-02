@@ -29,7 +29,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
   .setTitle('Plataforma Backend API')
   .setDescription('Esta API se comunicara mediante solicitudes HTTP para realizar consultas de base de datos, como crear, leer, actualizar y suprimir registros de los usuarios y recursos.')
-  .setVersion('1.0.0')
+  .setVersion('v1')
   .build();
 const document = SwaggerModule.createDocument(app, config);
 SwaggerModule.setup('api/docs', app, document);
