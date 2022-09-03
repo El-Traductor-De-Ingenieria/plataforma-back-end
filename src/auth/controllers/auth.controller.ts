@@ -6,33 +6,35 @@ import { AutheticatedGuard, DiscordAuthGuard } from '../utils/Guards';
 import { User } from '../../utils/typeorm/entities/User';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Autentificar')
-
+@ApiTags('Autenticación')
 @Controller(ROUTES.AUTH)
 export class AuthController {
   @Get('login')
   @UseGuards(DiscordAuthGuard)
-  @ApiOperation({ summary: 'Iniciar sesión del usuario con discord, esto se establecerá una cookie de sesión' })
+  @ApiOperation({
+    summary:
+      'Inicia sesión del usuario con Discord, esto se establecerá con una cookie de sesión.',
+  })
   @ApiResponse({ status: 200, description: 'Operación exitosa.' })
   login() {}
 
   @Get('redirect')
   @UseGuards(DiscordAuthGuard)
-  @ApiOperation({ summary: 'Redirige al usuario al panel principal' })
+  @ApiOperation({ summary: 'Redirige al usuario al panel principal.' })
   @ApiResponse({ status: 200, description: 'Operación exitosa.' })
   redirect(@Res() response: Response) {
     response.redirect('http://localhost');
   }
 
   @Post('logout')
-  @ApiOperation({ summary: 'Cierra la sesión del usuario' })
+  @ApiOperation({ summary: 'Cierra la sesión del usuario.' })
   @ApiResponse({ status: 200, description: 'Operación exitosa.' })
   logout() {}
 
   @Get('status')
   @UseGuards(AutheticatedGuard)
-  @ApiOperation({ summary: 'Obtiene el objeto del usuario actual' })
-  @ApiResponse({ status: 200, description: 'Operación exitosa.' ,type: User,})
+  @ApiOperation({ summary: 'Obtiene el objeto del usuario actual.' })
+  @ApiResponse({ status: 200, description: 'Operación exitosa.', type: User })
   status(@AuthUser() user: User) {
     return user;
   }
