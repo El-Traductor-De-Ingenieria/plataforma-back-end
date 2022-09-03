@@ -1,6 +1,7 @@
 export enum ROUTES {
   AUTH = 'auth',
   REPOSITORY = 'repo',
+  USER = 'user'
 }
 
 export enum SERVICES {
