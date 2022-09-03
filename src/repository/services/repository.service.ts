@@ -83,4 +83,17 @@ export class RepositoryService implements IRepositoryService {
 
     return this.dbFileRepository.save(file);
   }
+
+  search(data: string, page = 0) {
+    return this.dbFileRepository
+      .createQueryBuilder()
+      .select()
+      .where(`approved=1`)
+      .orWhere(`MATCH(fileName) AGAINST ('${data}' IN BOOLEAN MODE)`)
+      .orWhere(`MATCH(textOrUrl) AGAINST ('${data}' IN BOOLEAN MODE)`)
+      .orderBy('reputationPoints', 'DESC')
+      .skip(page * 10)
+      .take(20)
+      .getMany();
+  }
 }

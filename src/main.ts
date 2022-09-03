@@ -7,6 +7,9 @@ import { Connection, getRepository } from 'typeorm';
 import { Session } from './utils/typeorm/entities/Session';
 
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { domainToASCII } from 'url';
+import { writeFile, writeFileSync } from 'fs';
+import { exit } from 'process';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -27,12 +30,16 @@ async function bootstrap() {
 
   //Configuración de la documentación de Swagger en la ruta: api/docs
   const config = new DocumentBuilder()
-  .setTitle('Plataforma Backend API')
-  .setDescription('Esta API REST se encarga de dar comunicación al FrontEnd con las bases de datos y los servicios integrados dentro del servidor.')
-  .setVersion('v1')
-  .build();
-const document = SwaggerModule.createDocument(app, config);
-SwaggerModule.setup('api/docs', app, document);
+    .setTitle('Plataforma Backend API')
+    .setDescription(
+      `Esta API REST se encarga de dar comunicación al FrontEnd, con las bases de datos y los servicios
+      integrados dentro del servidor.`,
+    )
+    .setVersion('v1')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+
+  SwaggerModule.setup('api/docs', app, document);
 
   // Se puede activar esto pero depende de la implementación del frontend
   /*app.enableCors({
@@ -49,4 +56,29 @@ SwaggerModule.setup('api/docs', app, document);
     console.log(error);
   }
 }
-bootstrap();
+
+async function docs() {
+  const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
+
+  //Configuración de la documentación de Swagger en la ruta: api/docs
+  const config = new DocumentBuilder()
+    .setTitle('Plataforma Backend API')
+    .setDescription(
+      `Esta API REST se encarga de dar comunicación al FrontEnd, con las bases de datos y los servicios
+      integrados dentro del servidor.`,
+    )
+    .setVersion('v1')
+    .addCookieAuth('connect.sid')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  writeFileSync('api.json', JSON.stringify(document));
+
+  exit(0);
+}
+
+if (process.argv.length >= 3 && process.argv[2] == '--docs') {
+  docs();
+} else {
+  bootstrap();
+}

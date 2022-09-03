@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
@@ -25,6 +26,7 @@ export class DbFile {
   @ApiProperty()
   uploadDate: Date;
 
+  @Index({ fulltext: true })
   @Column({ type: 'varchar', length: '1024', nullable: true })
   @ApiProperty()
   textOrUrl?: string;
@@ -33,6 +35,7 @@ export class DbFile {
   @ApiProperty()
   filePath?: string;
 
+  @Index({ fulltext: true })
   @Column({ type: 'varchar', length: '256' })
   @ApiProperty()
   fileName: string;
@@ -44,4 +47,7 @@ export class DbFile {
   @Column({ type: 'bool', default: false })
   @ApiProperty()
   approved: boolean;
+
+  @Column({ type: 'numeric', default: 0 })
+  reputationPoints: number;
 }

@@ -15,4 +15,5 @@ export interface IRepositoryService {
     fileName: string,
     user: User,
   ): Promise<DbFile | null>;
+  search(data: string, page: number): Promise<DbFile[] | null>;
 }
