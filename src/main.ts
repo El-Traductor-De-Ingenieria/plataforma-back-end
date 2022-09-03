@@ -9,6 +9,7 @@ import { Session } from './utils/typeorm/entities/Session';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { domainToASCII } from 'url';
 import { writeFile } from 'fs';
+import { exit } from 'process';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -73,6 +74,8 @@ async function docs() {
   writeFile('api.json', JSON.stringify(document), (error) => {
     if (error) throw error;
   });
+
+  exit(0);
 }
 
 if (process.argv.length >= 3 && process.argv[2] == '--docs') {
