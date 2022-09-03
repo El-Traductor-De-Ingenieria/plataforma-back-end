@@ -18,7 +18,8 @@
     "test:watch": "cross-env NODE_OPTIONS=--tls-min-v1.0 jest --watch",
     "test:cov": "cross-env NODE_OPTIONS=--tls-min-v1.0 jest --coverage",
     "test:debug": "cross-env NODE_OPTIONS=--tls-min-v1.0 node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "cross-env NODE_OPTIONS=--tls-min-v1.0 jest --config ./test/jest-e2e.json"
+    "test:e2e": "cross-env NODE_OPTIONS=--tls-min-v1.0 jest --config ./test/jest-e2e.json",
+    "docs": "nest build && cross-env NODE_OPTIONS=--tls-min-v1.0 node ./dist/main.js --docs"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",

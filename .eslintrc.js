@@ -22,6 +22,12 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'no-empty-function': 'off',
-    '@typescript-eslint/no-empty-function': 'warn'
-  },
+    '@typescript-eslint/no-empty-function': 'warn',
+    'prettier/prettier': [
+      'error',
+      {
+        'endOfLine': 'auto',
+      }
+    ]
+  }
 };
