@@ -11,11 +11,31 @@ import { domainToASCII } from 'url';
 import { writeFile, writeFileSync } from 'fs';
 import { exit } from 'process';
 
-async function bootstrap() {
+async function bootstrap(create_docs: boolean) {
   const app = await NestFactory.create(AppModule);
   const sessionRepository = app.get(Connection).getRepository(Session);
 
   app.setGlobalPrefix('api');
+
+  const config = new DocumentBuilder()
+    .setTitle('Plataforma Backend API')
+    .setDescription(
+      `Esta API REST se encarga de dar comunicación al FrontEnd, con las bases de datos y los servicios
+        integrados dentro del servidor.`,
+    )
+    .setVersion('v1')
+    .addCookieAuth('connect.sid')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+
+  if (create_docs) {
+    writeFileSync('api.json', JSON.stringify(document));
+
+    exit(0);
+  }
+
+  SwaggerModule.setup('docs', app, document);
+
   app.use(
     session({
       secret: process.env.COOKIE_SECRET,
@@ -27,19 +47,6 @@ async function bootstrap() {
       store: new TypeormStore().connect(sessionRepository),
     }),
   );
-
-  //Configuración de la documentación de Swagger en la ruta: api/docs
-  const config = new DocumentBuilder()
-    .setTitle('Plataforma Backend API')
-    .setDescription(
-      `Esta API REST se encarga de dar comunicación al FrontEnd, con las bases de datos y los servicios
-      integrados dentro del servidor.`,
-    )
-    .setVersion('v1')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-
-  SwaggerModule.setup('api/docs', app, document);
 
   // Se puede activar esto pero depende de la implementación del frontend
   /*app.enableCors({
@@ -57,28 +64,4 @@ async function bootstrap() {
   }
 }
 
-async function docs() {
-  const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
-
-  //Configuración de la documentación de Swagger en la ruta: api/docs
-  const config = new DocumentBuilder()
-    .setTitle('Plataforma Backend API')
-    .setDescription(
-      `Esta API REST se encarga de dar comunicación al FrontEnd, con las bases de datos y los servicios
-      integrados dentro del servidor.`,
-    )
-    .setVersion('v1')
-    .addCookieAuth('connect.sid')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  writeFileSync('api.json', JSON.stringify(document));
-
-  exit(0);
-}
-
-if (process.argv.length >= 3 && process.argv[2] == '--docs') {
-  docs();
-} else {
-  bootstrap();
-}
+bootstrap(process.argv.length >= 3 && process.argv[2] == '--docs');
