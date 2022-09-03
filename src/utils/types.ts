@@ -12,3 +12,7 @@ export enum DbFileType {
   TEXT = 'text',
   FILE = 'file',
 }
+
+export enum RoleType {
+  MOD = 'mod',
+}
