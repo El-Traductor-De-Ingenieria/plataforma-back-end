@@ -23,7 +23,9 @@ import { DbFileType } from '../../utils/types';
 import { Response } from 'express';
 import { randomBytes } from 'crypto';
 import { existsSync, writeFileSync } from 'fs';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Repositorio')
 @Controller(ROUTES.REPOSITORY)
 export class RepositoryController {
   constructor(
@@ -32,8 +34,10 @@ export class RepositoryController {
   ) {}
 
   @Get('file/:id')
+  @ApiOperation({ summary: 'Retorna el ID del archivo a utilizar.' })
+  @ApiResponse({ status: 200, description: 'Operación exitosa.', type: String })
   getFile(@Param('id') id: number) {
-    return `This will return the file id ${id}`;
+    return `This will return the file ID ${id}`;
   }
 
   @Post('uploadFile')
@@ -56,7 +60,7 @@ export class RepositoryController {
     file: Express.Multer.File,
     @AuthUser() user: User,
   ) {
-    console.log('Uploading file');
+    console.log('Uploading file...');
     console.log(`Username: ${user.username}`);
     console.log(`Saved on ${file.path}`);
 
@@ -76,12 +80,14 @@ export class RepositoryController {
 
   @Post('upload')
   @UseGuards(AutheticatedGuard)
+  @ApiOperation({ summary: 'Permite cargar archivos al servidor.' })
+  @ApiResponse({ status: 200, description: 'Operación exitosa.' })
   async upload(
     @Body() body,
     @Res({ passthrough: true }) res: Response,
     @AuthUser() user: User,
   ) {
-    console.log('Uploading file data');
+    console.log('Uploading file data...');
 
     if (
       !body.type ||
@@ -95,7 +101,7 @@ export class RepositoryController {
 
     let fileDb = null;
     if (body.data.length > 1024) {
-      console.log('Creating file');
+      console.log('Creating file...');
 
       let tempName = 'uploads/' + randomBytes(16).toString('hex');
       let i = 500;
