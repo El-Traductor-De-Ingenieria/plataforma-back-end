@@ -3,6 +3,7 @@ import { UserDetails } from '../../utils/types';
 
 export interface IUserService {
   createUser(details: UserDetails): Promise<User>;
-  findUser(username: string): Promise<User | null>;
+  findUserByUsername(username: string): Promise<User | null>;
+  findUserById(id: number): Promise<User | null>;
   findUserByDiscordId(discordId: string): Promise<User | null>;
 }
