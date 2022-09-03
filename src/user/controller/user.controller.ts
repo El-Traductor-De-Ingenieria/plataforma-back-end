@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 import axios from 'axios';
 import { AutheticatedGuard } from 'src/auth/utils/Guards';
 import { ROUTES } from '../../utils/constants';
-
+import { GREMIO } from 'src/utils/constants'
 @ApiBearerAuth()
 @ApiTags('Usuario')
 
@@ -15,7 +15,7 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'Operación exitosa.', })
   async roles(@Param('id') id: string) {
     let x: any;
-    await axios .get(`https://discord.com/api/guilds/${process.env.GUILD_ID}/members/${id}`,
+    await axios .get(`https://discord.com/api/guilds/${GREMIO.ID}/members/${id}`,
     {
       headers: {
         'Authorization': 'Bot MTAxNTMzNjcxODQ4MTc1NjE3MA.GBnykX.uHqXoQsAWyQQlhrG9o5wes3LniL_alGWoxEaDA'
