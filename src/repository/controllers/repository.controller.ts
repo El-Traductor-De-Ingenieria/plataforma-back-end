@@ -149,6 +149,8 @@ export class RepositoryController {
   }
 
   @Get('search')
+  @ApiOperation({ summary: 'Permite buscar archivos.' })
+  @ApiResponse({ status: 200, description: 'Operación exitosa.' })
   async searchFile(
     @Body('query') query: string,
     @Body('num') numEntries: number,
