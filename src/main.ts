@@ -69,6 +69,7 @@ async function docs() {
       integrados dentro del servidor.`,
     )
     .setVersion('v1')
+    .addCookieAuth('connect.sid')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   writeFileSync('api.json', JSON.stringify(document));
