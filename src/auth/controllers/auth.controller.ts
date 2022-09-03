@@ -4,7 +4,12 @@ import { AuthUser } from '../../utils/decorators';
 import { ROUTES } from '../../utils/constants';
 import { AutheticatedGuard, DiscordAuthGuard } from '../utils/Guards';
 import { User } from '../../utils/typeorm/entities/User';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCookieAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('Autenticación')
 @Controller(ROUTES.AUTH)
@@ -33,6 +38,7 @@ export class AuthController {
 
   @Get('status')
   @UseGuards(AutheticatedGuard)
+  @ApiCookieAuth()
   @ApiOperation({ summary: 'Obtiene el objeto del usuario actual.' })
   @ApiResponse({ status: 200, description: 'Operación exitosa.', type: User })
   status(@AuthUser() user: User) {

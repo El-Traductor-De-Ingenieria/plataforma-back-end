@@ -23,7 +23,12 @@ import { DbFileType } from '../../utils/types';
 import { Response } from 'express';
 import { randomBytes } from 'crypto';
 import { existsSync, writeFileSync } from 'fs';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCookieAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('Repositorio')
 @Controller(ROUTES.REPOSITORY)
@@ -34,14 +39,15 @@ export class RepositoryController {
   ) {}
 
   @Get('file/:id')
-  @ApiOperation({ summary: 'Retorna el ID del archivo a utilizar.' })
+  @ApiOperation({ summary: 'Retorna el archivo a utilizar.' })
   @ApiResponse({ status: 200, description: 'Operación exitosa.', type: String })
   getFile(@Param('id') id: number) {
-    return `This will return the file ID ${id}`;
+    return `This will return the file ${id}`;
   }
 
   @Post('uploadFile')
   @UseGuards(AutheticatedGuard)
+  @ApiCookieAuth()
   @UseInterceptors(
     FileInterceptor('file', {
       dest: 'uploads/',
@@ -80,6 +86,7 @@ export class RepositoryController {
 
   @Post('upload')
   @UseGuards(AutheticatedGuard)
+  @ApiCookieAuth()
   @ApiOperation({ summary: 'Permite cargar archivos al servidor.' })
   @ApiResponse({ status: 200, description: 'Operación exitosa.' })
   async upload(

@@ -8,7 +8,7 @@ import { Session } from './utils/typeorm/entities/Session';
 
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { domainToASCII } from 'url';
-import { writeFile } from 'fs';
+import { writeFile, writeFileSync } from 'fs';
 import { exit } from 'process';
 
 async function bootstrap() {
@@ -71,9 +71,7 @@ async function docs() {
     .setVersion('v1')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  writeFile('api.json', JSON.stringify(document), (error) => {
-    if (error) throw error;
-  });
+  writeFileSync('api.json', JSON.stringify(document));
 
   exit(0);
 }
