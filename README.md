@@ -16,4 +16,13 @@ Para generar tus credenciales para el login con Discord puedes seguir [esta guí
 
 Si no tienes un usuario-contraseña de MySql, puedes ver [esta guía](https://dev.mysql.com/doc/refman/8.0/en/creating-accounts.html).
 
-Luego, si todo sale bien, al correr el programa con `npm start` (o equivalente) podrás ver la documentación de la API desde tu navegadoor en `localhost:{puerto}/api/docs` (el puerto por defecto es `3000`). 
+Luego, si todo sale bien, al correr el programa con `npm start` (o equivalente) podrás ver la documentación de la API desde tu navegador en `localhost:{puerto}/api/docs` (el puerto por defecto es `3000`). 
+
+# Estructura Básica de Archivos
+* dist/ - Archivos generados por NodeJS para funcionamiento.
+* test/ - Unit testing.
+* src/ - Código fuente.
+  * auth/ - Autenticación de usuarios.
+  * repository/ - Manejo de contenido subido por usuarios.
+  * user/ - Manejo de usuarios.
+  * utils/ - Herramientas y tipos comunes.
