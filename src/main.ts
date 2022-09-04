@@ -3,13 +3,13 @@ import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import { TypeormStore } from 'connect-typeorm';
-import { Connection, getRepository } from 'typeorm';
+import { Connection } from 'typeorm';
 import { Session } from './utils/typeorm/entities/Session';
 
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { domainToASCII } from 'url';
-import { writeFile, writeFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import { exit } from 'process';
+import { resolve as pathResolve } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -72,8 +72,7 @@ async function docs() {
     .addCookieAuth('connect.sid')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  writeFileSync('api.json', JSON.stringify(document));
-
+  writeFileSync(pathResolve('./docs/api.json'), JSON.stringify(document));
   exit(0);
 }
 
