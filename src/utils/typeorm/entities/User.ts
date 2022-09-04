@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-
+import { RoleType } from '../../../utils/types';
 
 @Entity({ name: 'users' })
 export class User {
@@ -15,4 +15,8 @@ export class User {
   @Column({ unique: true })
   @ApiProperty()
   username: string;
+
+  @Column('simple-array')
+  @ApiProperty()
+  roles: RoleType[];
 }

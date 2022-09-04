@@ -1,5 +1,10 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import {
+  createParamDecorator,
+  ExecutionContext,
+  SetMetadata,
+} from '@nestjs/common';
 import { Request } from 'express';
+import { RoleType } from './types';
 
 export const AuthUser = createParamDecorator(
   (data: unknown, context: ExecutionContext) => {
@@ -7,3 +12,5 @@ export const AuthUser = createParamDecorator(
     return request.user;
   },
 );
+
+export const Roles = (...roles: RoleType[]) => SetMetadata('roles', roles);

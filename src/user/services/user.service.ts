@@ -13,12 +13,12 @@ export class UserService implements IUserService {
 
   async createUser(details: UserDetails) {
     console.log('Create User');
-    let userDatabase = await this.findUser(details.username);
+    let userDatabase = await this.findUserByUsername(details.username);
     let id = 1;
     while (userDatabase != null) {
       console.log(userDatabase);
       details.username = details.username + id;
-      userDatabase = await this.findUser(details.username);
+      userDatabase = await this.findUserByUsername(details.username);
       id++;
     }
     const user = this.userRepository.create({
@@ -29,9 +29,14 @@ export class UserService implements IUserService {
     return this.userRepository.save(user);
   }
 
-  findUser(username: string) {
+  findUserByUsername(username: string) {
     console.log('Find User');
     return this.userRepository.findOne({ where: [{ username: username }] });
+  }
+
+  findUserById(id: number) {
+    console.log('Find User');
+    return this.userRepository.findOne({ where: [{ id: id }] });
   }
 
   findUserByDiscordId(discordId: string) {

@@ -1,6 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
+import { RoleType } from '../../utils/types';
 
 @Injectable()
 export class DiscordAuthGuard extends AuthGuard('discord') {
@@ -16,8 +18,19 @@ export class DiscordAuthGuard extends AuthGuard('discord') {
 
 @Injectable()
 export class AutheticatedGuard implements CanActivate {
+  constructor(private reflector: Reflector) {}
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    return request.isAuthenticated();
+    const authenticated = request.isAuthenticated();
+    const roles = this.reflector.get<RoleType[]>('roles', context.getHandler());
+
+    if (!roles) return authenticated;
+
+    for (const role in roles) {
+      if (request.user.roles.includes(role)) return authenticated;
+    }
+
+    return false;
   }
 }
