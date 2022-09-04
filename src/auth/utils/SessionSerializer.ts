@@ -1,5 +1,5 @@
 import { PassportSerializer } from '@nestjs/passport';
-import { Done } from '../../utils/types';
+import { DoneSerialize, DoneDeserialize } from '../../utils/types';
 import { User } from '../../utils/typeorm/entities/User';
 import { Inject } from '@nestjs/common';
 import { SERVICES } from '../../utils/constants';
@@ -12,15 +12,13 @@ export class SessionSerializer extends PassportSerializer {
     super();
   }
 
-  serializeUser(user: User, done: Done) {
-    done(null, user);
+  serializeUser(user: User, done: DoneSerialize) {
+    done(null, user.id);
   }
 
-  async deserializeUser(user: User, done: Done) {
+  async deserializeUser(id: number, done: DoneDeserialize) {
     try {
-      const userDatabase = await this.userService.findUserByUsername(
-        user.username,
-      ); //In the cookie we search by username
+      const userDatabase = await this.userService.findUserById(id);
       return userDatabase ? done(null, userDatabase) : done(null, null);
     } catch (error) {
       done(error, null);

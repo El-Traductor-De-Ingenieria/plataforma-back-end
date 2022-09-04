@@ -6,4 +6,6 @@ export interface IUserService {
   findUserByUsername(username: string): Promise<User | null>;
   findUserById(id: number): Promise<User | null>;
   findUserByDiscordId(discordId: string): Promise<User | null>;
+
+  saveUser(user: User): Promise<User | null>;
 }

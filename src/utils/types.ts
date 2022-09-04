@@ -5,7 +5,8 @@ export type UserDetails = {
   username: string;
 };
 
-export type Done = (error: Error, user: User) => void;
+export type DoneSerialize = (error: Error, id: number) => void;
+export type DoneDeserialize = (error: Error, user: User) => void;
 
 export enum DbFileType {
   LINK = 'link',
@@ -15,4 +16,5 @@ export enum DbFileType {
 
 export enum RoleType {
   MOD = 'mod',
+  ADMIN = 'admin',
 }

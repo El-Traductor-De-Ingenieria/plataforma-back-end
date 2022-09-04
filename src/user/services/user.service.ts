@@ -43,4 +43,9 @@ export class UserService implements IUserService {
     console.log('Find User');
     return this.userRepository.findOne({ where: [{ discordId: discordId }] });
   }
+
+  saveUser(user: User) {
+    console.log('Save User');
+    return this.userRepository.save(user);
+  }
 }
