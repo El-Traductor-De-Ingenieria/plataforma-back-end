@@ -18,7 +18,7 @@ export class UserController {
     await axios .get(`https://discord.com/api/guilds/${GREMIO.ID}/members/${id}`,
     {
       headers: {
-        'Authorization': 'Bot MTAxNTMzNjcxODQ4MTc1NjE3MA.GBnykX.uHqXoQsAWyQQlhrG9o5wes3LniL_alGWoxEaDA'
+        'Authorization': `Bot ${process.env.BOT_TOKEN}`
       }
     })
     .then((response) => x=response.data.roles)
