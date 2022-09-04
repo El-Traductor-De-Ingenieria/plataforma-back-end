@@ -13,7 +13,7 @@ export class UserController {
   @UseGuards(AutheticatedGuard) 
   @ApiOperation({ summary: 'Obtiene los datos del usuario en discord' })
   @ApiResponse({ status: 200, description: 'Operación exitosa.', })
-  async roles(@Param('id') id: string) {
-    return this.userService.findUserByDiscordId(id);
+  async roles(@Param('id') id: number) {
+    return this.userService.findUserById(id);
   }
 }
