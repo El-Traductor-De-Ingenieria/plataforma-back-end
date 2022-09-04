@@ -9,7 +9,3 @@ export enum SERVICES {
   USER = 'USER_SERVICE',
   REPO = 'REPO_SERVICE',
 }
-
-export const GREMIO = { 
-  ID: '1015337362210959462',
-}
