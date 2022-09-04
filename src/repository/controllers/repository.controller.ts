@@ -46,6 +46,8 @@ export class RepositoryController {
   }
 
   @Post('uploadFile')
+  @ApiOperation({ summary: 'Permite subir archivos de cualquier tipo al servidor.' })
+  @ApiResponse({ status: 200, description: 'Operación exitosa.', type: String })
   @UseGuards(AutheticatedGuard)
   @ApiCookieAuth()
   @UseInterceptors(
@@ -87,7 +89,7 @@ export class RepositoryController {
   @Post('upload')
   @UseGuards(AutheticatedGuard)
   @ApiCookieAuth()
-  @ApiOperation({ summary: 'Permite cargar archivos al servidor.' })
+  @ApiOperation({ summary: 'Permite subir texto o urls al servidor.' })
   @ApiResponse({ status: 200, description: 'Operación exitosa.' })
   async upload(
     @Body() body,
@@ -147,6 +149,8 @@ export class RepositoryController {
   }
 
   @Get('search')
+  @ApiOperation({ summary: 'Permite buscar archivos.' })
+  @ApiResponse({ status: 200, description: 'Operación exitosa.' })
   async searchFile(
     @Body('query') query: string,
     @Body('num') numEntries: number,
