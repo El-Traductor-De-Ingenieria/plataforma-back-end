@@ -28,7 +28,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Redirige al usuario al panel principal.' })
   @ApiResponse({ status: 200, description: 'Operación exitosa.' })
   redirect(@Res() response: Response) {
-    response.redirect('http://localhost');
+    response.redirect('http://localhost:8080');
   }
 
   @Post('logout')

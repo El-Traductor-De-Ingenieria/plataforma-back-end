@@ -49,10 +49,10 @@ async function bootstrap(create_docs: boolean) {
   );
 
   // Se puede activar esto pero depende de la implementación del frontend
-  /*app.enableCors({
-    origin: ['http://localhost:80'],
+  app.enableCors({
+    origin: ['http://localhost:8080'],
     credentials: true,
-  });*/
+  });
   app.use(passport.initialize());
   app.use(passport.session());
 
