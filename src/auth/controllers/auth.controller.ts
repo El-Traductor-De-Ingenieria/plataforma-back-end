@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Response, Request } from 'express';
 import { AuthUser } from '../../utils/decorators';
 import { ROUTES } from '../../utils/constants';
 import { AutheticatedGuard, DiscordAuthGuard } from '../utils/Guards';
@@ -32,9 +32,19 @@ export class AuthController {
   }
 
   @Post('logout')
+  @UseGuards(AutheticatedGuard)
   @ApiOperation({ summary: 'Cierra la sesión del usuario.' })
   @ApiResponse({ status: 200, description: 'Operación exitosa.' })
-  logout() {}
+  logout(@Req() request: Request, @Res() response: Response) {
+    request.logout(
+      {
+        keepSessionInfo: false,
+      },
+      () => {
+        response.redirect('http://localhost:8080');
+      },
+    );
+  }
 
   @Get('status')
   @UseGuards(AutheticatedGuard)
