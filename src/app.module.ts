@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { RepositoryModule } from './repository/repository.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { ClamscanModule, ClamScanOptions } from 'nestjs-clamscan';
 
 @Module({
   imports: [
@@ -35,6 +36,10 @@ import { MulterModule } from '@nestjs/platform-express';
     }),
     MulterModule.register({
       dest: './uploads',
+    }),
+    ClamscanModule.forRoot({
+      host: process.env.CLAMAV_HOST || 'localhost',
+      port: 3310,
     }),
     AuthModule,
     UserModule,

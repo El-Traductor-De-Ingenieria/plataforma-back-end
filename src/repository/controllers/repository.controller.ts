@@ -22,13 +22,14 @@ import { IRepositoryService } from '../interfaces/repository';
 import { DbFileType } from '../../utils/types';
 import { Response } from 'express';
 import { randomBytes } from 'crypto';
-import { existsSync, writeFileSync } from 'fs';
+import { existsSync, unlinkSync, writeFileSync } from 'fs';
 import {
   ApiCookieAuth,
   ApiOperation,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { ClamScanService } from 'nestjs-clamscan';
 
 @ApiTags('Repositorio')
 @Controller(ROUTES.REPOSITORY)
@@ -36,6 +37,7 @@ export class RepositoryController {
   constructor(
     @Inject(SERVICES.REPO)
     private readonly repositoryService: IRepositoryService,
+    private readonly clamScanService: ClamScanService,
   ) {}
 
   @Get('file/:id')
@@ -46,7 +48,9 @@ export class RepositoryController {
   }
 
   @Post('uploadFile')
-  @ApiOperation({ summary: 'Permite subir archivos de cualquier tipo al servidor.' })
+  @ApiOperation({
+    summary: 'Permite subir archivos de cualquier tipo al servidor.',
+  })
   @ApiResponse({ status: 200, description: 'Operación exitosa.', type: String })
   @UseGuards(AutheticatedGuard)
   @ApiCookieAuth()
@@ -68,6 +72,25 @@ export class RepositoryController {
     file: Express.Multer.File,
     @AuthUser() user: User,
   ) {
+    try {
+      if (
+        process.env.CLAMAV_HOST &&
+        !(await this.clamScanService.scanFile(file.path))
+      ) {
+        console.log('Infected file...');
+
+        //TODO: add a proper way to block the user
+
+        return unlinkSync(file.path);
+      }
+    } catch {
+      console.log('Server not running');
+
+      //TODO: add a proper way to block the user
+
+      return unlinkSync(file.path);
+    }
+
     console.log('Uploading file...');
     console.log(`Username: ${user.username}`);
     console.log(`Saved on ${file.path}`);
