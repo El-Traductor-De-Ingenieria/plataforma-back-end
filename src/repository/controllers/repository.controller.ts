@@ -171,7 +171,7 @@ export class RepositoryController {
     return fileDb;
   }
 
-  @Get('search')
+  @Post('search')
   @ApiOperation({ summary: 'Permite buscar archivos.' })
   @ApiResponse({ status: 200, description: 'Operación exitosa.' })
   async searchFile(
