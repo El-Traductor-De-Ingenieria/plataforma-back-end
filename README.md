@@ -1,6 +1,6 @@
 # Backend del Proyecto Plataforma v2
 Hecho en NestJS.
-Link del frontend del proyecto [aquí](https://github.com/beto-bit/plat-v2).
+Link del frontend del proyecto [aquí](https://github.com/El-Traductor-De-Ingenieria/plat-front).
 
 # ¿Cómo ejecutar el proyecto en local?
 ### Requisitos
