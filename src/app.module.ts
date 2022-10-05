@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { entities } from './utils/typeorm';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
+import { entities } from '@utils/typeorm';
+import { AuthModule } from '@auth/auth.module';
+import { UserModule } from '@user/user.module';
 import { PassportModule } from '@nestjs/passport';
-import { RepositoryModule } from './repository/repository.module';
+import { RepositoryModule } from '@repository/repository.module';
 import { MulterModule } from '@nestjs/platform-express';
-import { ClamscanModule, ClamScanOptions } from 'nestjs-clamscan';
+import { ClamscanModule } from 'nestjs-clamscan';
 
 @Module({
     imports: [

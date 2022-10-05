@@ -14,12 +14,12 @@ import {
     UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AuthUser } from '../../utils/decorators';
-import { User } from '../../utils/typeorm/entities/User';
-import { AutheticatedGuard } from '../../auth/utils/Guards';
-import { ROUTES, SERVICES } from '../../utils/constants';
+import { AuthUser } from '@utils/decorators';
+import { User } from '@utils/typeorm/entities/User';
+import { AutheticatedGuard } from '@auth/utils/Guards';
+import { ROUTES, SERVICES } from '@utils/constants';
 import { IRepositoryService } from '../interfaces/repository';
-import { DbFileType } from '../../utils/types';
+import { DbFileType } from '@utils/types';
 import { Response } from 'express';
 import { randomBytes } from 'crypto';
 import { existsSync, unlinkSync, writeFileSync } from 'fs';
