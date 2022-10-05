@@ -7,15 +7,15 @@ import { DiscordStrategy } from './utils/DiscordStrategy';
 import { SessionSerializer } from './utils/SessionSerializer';
 
 @Module({
-  imports: [UserModule],
-  controllers: [AuthController],
-  providers: [
-    DiscordStrategy,
-    SessionSerializer,
-    {
-      provide: SERVICES.AUTH,
-      useClass: AuthService,
-    },
-  ],
+    imports: [UserModule],
+    controllers: [AuthController],
+    providers: [
+        DiscordStrategy,
+        SessionSerializer,
+        {
+            provide: SERVICES.AUTH,
+            useClass: AuthService,
+        },
+    ],
 })
 export class AuthModule {}

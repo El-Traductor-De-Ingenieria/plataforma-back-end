@@ -6,19 +6,19 @@ import { RepositoryController } from './controllers/repository.controller';
 import { RepositoryService } from './services/repository.service';
 
 @Module({
-  controllers: [RepositoryController],
-  imports: [TypeOrmModule.forFeature([DbFile])],
-  providers: [
-    {
-      provide: SERVICES.REPO,
-      useClass: RepositoryService,
-    },
-  ],
-  exports: [
-    {
-      provide: SERVICES.REPO,
-      useClass: RepositoryService,
-    },
-  ],
+    controllers: [RepositoryController],
+    imports: [TypeOrmModule.forFeature([DbFile])],
+    providers: [
+        {
+            provide: SERVICES.REPO,
+            useClass: RepositoryService,
+        },
+    ],
+    exports: [
+        {
+            provide: SERVICES.REPO,
+            useClass: RepositoryService,
+        },
+    ],
 })
 export class RepositoryModule {}
