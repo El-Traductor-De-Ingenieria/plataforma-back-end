@@ -7,45 +7,48 @@ import { UserDetails } from '../../utils/types';
 
 @Injectable()
 export class UserService implements IUserService {
-  constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-  ) {}
+    constructor(
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>
+    ) {}
 
-  async createUser(details: UserDetails) {
-    console.log('Create User');
-    let userDatabase = await this.findUserByUsername(details.username);
-    let id = 1;
-    while (userDatabase != null) {
-      console.log(userDatabase);
-      details.username = details.username + id;
-      userDatabase = await this.findUserByUsername(details.username);
-      id++;
+    async createUser(details: UserDetails) {
+        console.log('Create User');
+        let userDatabase = await this.findUserByUsername(details.username);
+        let id = 1;
+        while (userDatabase != null) {
+            console.log(userDatabase);
+            details.username = details.username + id;
+            userDatabase = await this.findUserByUsername(details.username);
+            id++;
+        }
+        const user = this.userRepository.create({
+            discordId: details.discordId,
+            username: details.username,
+        });
+
+        return this.userRepository.save(user);
     }
-    const user = this.userRepository.create({
-      discordId: details.discordId,
-      username: details.username,
-    });
 
-    return this.userRepository.save(user);
-  }
+    findUserByUsername(username: string) {
+        console.log('Find User');
+        return this.userRepository.findOne({ where: [{ username: username }] });
+    }
 
-  findUserByUsername(username: string) {
-    console.log('Find User');
-    return this.userRepository.findOne({ where: [{ username: username }] });
-  }
+    findUserById(id: number) {
+        console.log('Find User');
+        return this.userRepository.findOne({ where: [{ id: id }] });
+    }
 
-  findUserById(id: number) {
-    console.log('Find User');
-    return this.userRepository.findOne({ where: [{ id: id }] });
-  }
+    findUserByDiscordId(discordId: string) {
+        console.log('Find User');
+        return this.userRepository.findOne({
+            where: [{ discordId: discordId }],
+        });
+    }
 
-  findUserByDiscordId(discordId: string) {
-    console.log('Find User');
-    return this.userRepository.findOne({ where: [{ discordId: discordId }] });
-  }
-
-  saveUser(user: User) {
-    console.log('Save User');
-    return this.userRepository.save(user);
-  }
+    saveUser(user: User) {
+        console.log('Save User');
+        return this.userRepository.save(user);
+    }
 }

@@ -1,17 +1,17 @@
 import {
-  Body,
-  Controller,
-  Get,
-  HttpStatus,
-  Inject,
-  Param,
-  ParseFilePipeBuilder,
-  Post,
-  Req,
-  Res,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors,
+    Body,
+    Controller,
+    Get,
+    HttpStatus,
+    Inject,
+    Param,
+    ParseFilePipeBuilder,
+    Post,
+    Req,
+    Res,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthUser } from '../../utils/decorators';
@@ -24,172 +24,180 @@ import { Response } from 'express';
 import { randomBytes } from 'crypto';
 import { existsSync, unlinkSync, writeFileSync } from 'fs';
 import {
-  ApiCookieAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
+    ApiCookieAuth,
+    ApiOperation,
+    ApiResponse,
+    ApiTags,
 } from '@nestjs/swagger';
 import { ClamScanService } from 'nestjs-clamscan';
 
 @ApiTags('Repositorio')
 @Controller(ROUTES.REPOSITORY)
 export class RepositoryController {
-  constructor(
-    @Inject(SERVICES.REPO)
-    private readonly repositoryService: IRepositoryService,
-    private readonly clamScanService: ClamScanService,
-  ) {}
+    constructor(
+        @Inject(SERVICES.REPO)
+        private readonly repositoryService: IRepositoryService,
+        private readonly clamScanService: ClamScanService
+    ) {}
 
-  @Get('file/:id')
-  @ApiOperation({ summary: 'Retorna el archivo a utilizar.' })
-  @ApiResponse({ status: 200, description: 'Operación exitosa.', type: String })
-  getFile(@Param('id') id: number) {
-    return `This will return the file ${id}`;
-  }
+    @Get('file/:id')
+    @ApiOperation({ summary: 'Retorna el archivo a utilizar.' })
+    @ApiResponse({
+        status: 200,
+        description: 'Operación exitosa.',
+        type: String,
+    })
+    getFile(@Param('id') id: number) {
+        return `This will return the file ${id}`;
+    }
 
-  @Post('uploadFile')
-  @ApiOperation({
-    summary: 'Permite subir archivos de cualquier tipo al servidor.',
-  })
-  @ApiResponse({ status: 200, description: 'Operación exitosa.', type: String })
-  @UseGuards(AutheticatedGuard)
-  @ApiCookieAuth()
-  @UseInterceptors(
-    FileInterceptor('file', {
-      dest: 'uploads/',
-    }),
-  )
-  async uploadFile(
-    @UploadedFile(
-      new ParseFilePipeBuilder()
-        .addMaxSizeValidator({
-          maxSize: 1024 * 1024 * 10,
+    @Post('uploadFile')
+    @ApiOperation({
+        summary: 'Permite subir archivos de cualquier tipo al servidor.',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Operación exitosa.',
+        type: String,
+    })
+    @UseGuards(AutheticatedGuard)
+    @ApiCookieAuth()
+    @UseInterceptors(
+        FileInterceptor('file', {
+            dest: 'uploads/',
         })
-        .build({
-          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-        }),
     )
-    file: Express.Multer.File,
-    @AuthUser() user: User,
-  ) {
-    try {
-      if (
-        process.env.CLAMAV_HOST &&
-        !(await this.clamScanService.scanFile(file.path))
-      ) {
-        console.log('Infected file...');
-
-        //TODO: add a proper way to block the user
-
-        return unlinkSync(file.path);
-      }
-    } catch {
-      console.log('Server not running');
-
-      //TODO: add a proper way to block the user
-
-      return unlinkSync(file.path);
-    }
-
-    console.log('Uploading file...');
-    console.log(`Username: ${user.username}`);
-    console.log(`Saved on ${file.path}`);
-
-    const fileDb = await this.repositoryService.newFileTypeFile(
-      file.path,
-      file.originalname,
-      user,
-    );
-
-    console.log(fileDb.filePath);
-    console.log(fileDb.id);
-    console.log(fileDb.uploaderId);
-    console.log(fileDb.uploadDate);
-
-    return fileDb;
-  }
-
-  @Post('upload')
-  @UseGuards(AutheticatedGuard)
-  @ApiCookieAuth()
-  @ApiOperation({ summary: 'Permite subir texto o urls al servidor.' })
-  @ApiResponse({ status: 200, description: 'Operación exitosa.' })
-  async upload(
-    @Body() body,
-    @Res({ passthrough: true }) res: Response,
-    @AuthUser() user: User,
-  ) {
-    console.log('Uploading file data...');
-
-    if (
-      !body.type ||
-      body.type == DbFileType.FILE ||
-      !body.name ||
-      !body.name.length
+    async uploadFile(
+        @UploadedFile(
+            new ParseFilePipeBuilder()
+                .addMaxSizeValidator({
+                    maxSize: 1024 * 1024 * 10,
+                })
+                .build({
+                    errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+                })
+        )
+        file: Express.Multer.File,
+        @AuthUser() user: User
     ) {
-      res.status(HttpStatus.BAD_REQUEST);
-      return [];
+        try {
+            if (
+                process.env.CLAMAV_HOST &&
+                !(await this.clamScanService.scanFile(file.path))
+            ) {
+                console.log('Infected file...');
+
+                //TODO: add a proper way to block the user
+
+                return unlinkSync(file.path);
+            }
+        } catch {
+            console.log('Server not running');
+
+            //TODO: add a proper way to block the user
+
+            return unlinkSync(file.path);
+        }
+
+        console.log('Uploading file...');
+        console.log(`Username: ${user.username}`);
+        console.log(`Saved on ${file.path}`);
+
+        const fileDb = await this.repositoryService.newFileTypeFile(
+            file.path,
+            file.originalname,
+            user
+        );
+
+        console.log(fileDb.filePath);
+        console.log(fileDb.id);
+        console.log(fileDb.uploaderId);
+        console.log(fileDb.uploadDate);
+
+        return fileDb;
     }
 
-    let fileDb = null;
-    if (body.data.length > 1024) {
-      console.log('Creating file...');
+    @Post('upload')
+    @UseGuards(AutheticatedGuard)
+    @ApiCookieAuth()
+    @ApiOperation({ summary: 'Permite subir texto o urls al servidor.' })
+    @ApiResponse({ status: 200, description: 'Operación exitosa.' })
+    async upload(
+        @Body() body,
+        @Res({ passthrough: true }) res: Response,
+        @AuthUser() user: User
+    ) {
+        console.log('Uploading file data...');
 
-      let tempName = 'uploads/' + randomBytes(16).toString('hex');
-      let i = 500;
-      while (existsSync(tempName) && i != 0) {
-        tempName = 'uploads/' + randomBytes(16).toString('hex');
-        i--;
-      }
+        if (
+            !body.type ||
+            body.type == DbFileType.FILE ||
+            !body.name ||
+            !body.name.length
+        ) {
+            res.status(HttpStatus.BAD_REQUEST);
+            return [];
+        }
 
-      if (i == 0) {
-        res.status(HttpStatus.REQUEST_TIMEOUT);
-        return [];
-      }
+        let fileDb = null;
+        if (body.data.length > 1024) {
+            console.log('Creating file...');
 
-      writeFileSync(tempName, body.data);
+            let tempName = 'uploads/' + randomBytes(16).toString('hex');
+            let i = 500;
+            while (existsSync(tempName) && i != 0) {
+                tempName = 'uploads/' + randomBytes(16).toString('hex');
+                i--;
+            }
 
-      fileDb = await this.repositoryService.newFileTypeFile(
-        tempName,
-        body.name,
-        user,
-      );
-    } else {
-      fileDb = await this.repositoryService.newFileTypeTextOrUrl(
-        body.data,
-        body.type == DbFileType.LINK,
-        body.name,
-        user,
-      );
+            if (i == 0) {
+                res.status(HttpStatus.REQUEST_TIMEOUT);
+                return [];
+            }
+
+            writeFileSync(tempName, body.data);
+
+            fileDb = await this.repositoryService.newFileTypeFile(
+                tempName,
+                body.name,
+                user
+            );
+        } else {
+            fileDb = await this.repositoryService.newFileTypeTextOrUrl(
+                body.data,
+                body.type == DbFileType.LINK,
+                body.name,
+                user
+            );
+        }
+
+        console.log(fileDb.filePath);
+        console.log(fileDb.id);
+        console.log(fileDb.uploaderId);
+        console.log(fileDb.uploadDate);
+
+        return fileDb;
     }
 
-    console.log(fileDb.filePath);
-    console.log(fileDb.id);
-    console.log(fileDb.uploaderId);
-    console.log(fileDb.uploadDate);
+    @Post('search')
+    @ApiOperation({ summary: 'Permite buscar archivos.' })
+    @ApiResponse({ status: 200, description: 'Operación exitosa.' })
+    async searchFile(
+        @Body('query') query: string,
+        @Body('num') numEntries: number,
+        @Body('page') page: number
+    ) {
+        const ret = await this.repositoryService.search(
+            query,
+            page && page != -1 ? page : 0
+        );
 
-    return fileDb;
-  }
+        const retLength =
+            numEntries != null ? (numEntries > 10 ? 10 : numEntries) : 10;
+        if (ret.length > retLength) {
+            return ret.slice(0, retLength - 1);
+        }
 
-  @Post('search')
-  @ApiOperation({ summary: 'Permite buscar archivos.' })
-  @ApiResponse({ status: 200, description: 'Operación exitosa.' })
-  async searchFile(
-    @Body('query') query: string,
-    @Body('num') numEntries: number,
-    @Body('page') page: number,
-  ) {
-    const ret = await this.repositoryService.search(
-      query,
-      page && page != -1 ? page : 0,
-    );
-
-    const retLength =
-      numEntries != null ? (numEntries > 10 ? 10 : numEntries) : 10;
-    if (ret.length > retLength) {
-      return ret.slice(0, retLength - 1);
+        return ret;
     }
-
-    return ret;
-  }
 }
