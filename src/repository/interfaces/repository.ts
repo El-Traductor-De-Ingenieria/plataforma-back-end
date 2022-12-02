@@ -1,5 +1,5 @@
-import { User } from '../../utils/typeorm/entities/User';
-import { DbFile } from '../../utils/typeorm/entities/DbFile';
+import { User } from '@utils/typeorm/entities/User';
+import { DbFile } from '@utils/typeorm/entities/DbFile';
 
 export interface IRepositoryService {
     getFile(id: number): Promise<DbFile | null>;

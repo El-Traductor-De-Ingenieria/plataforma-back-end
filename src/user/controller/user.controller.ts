@@ -15,12 +15,12 @@ import {
     ApiResponse,
     ApiTags,
 } from '@nestjs/swagger';
-import { AutheticatedGuard } from '../../auth/utils/Guards';
-import { AuthUser } from '../../utils/decorators';
-import { ROUTES, SERVICES } from '../../utils/constants';
+import { AutheticatedGuard } from '@auth/utils/Guards';
+import { AuthUser } from '@utils/decorators';
+import { ROUTES, SERVICES } from '@utils/constants';
 import { IUserService } from '../interfaces/user';
-import { User } from '../../utils/typeorm/entities/User';
-import { RoleType } from '../../utils/types';
+import { User } from '@utils/typeorm/entities/User';
+import { RoleType } from '@utils/types';
 import { Response } from 'express';
 
 @ApiBearerAuth()

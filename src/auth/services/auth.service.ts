@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserDetails } from '../../utils/types';
-import { IUserService } from '../../user/interfaces/user';
-import { SERVICES } from '../../utils/constants';
+import { UserDetails } from '@utils/types';
+import { IUserService } from '@user/interfaces/user';
+import { SERVICES } from '@utils/constants';
 import { IAuthService } from '../interfaces/auth';
 
 @Injectable()

@@ -3,12 +3,11 @@ import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import { TypeormStore } from 'connect-typeorm';
-import { Connection, getRepository } from 'typeorm';
-import { Session } from './utils/typeorm/entities/Session';
+import { Connection } from 'typeorm';
+import { Session } from '@utils/typeorm/entities/Session';
 
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { domainToASCII } from 'url';
-import { writeFile, writeFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import { exit } from 'process';
 
 async function bootstrap(create_docs: boolean) {

@@ -1,4 +1,4 @@
-import { DbFileType } from '../../../utils/types';
+import { DbFileType } from '@utils/types';
 import {
     Column,
     CreateDateColumn,

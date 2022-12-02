@@ -20,7 +20,11 @@
     "paths": {
       "src/*": [
         "./src/*"
-      ]
+      ],
+      "@auth/*": ["src/auth/*"],
+      "@repository/*": ["src/repository/*"],
+      "@user/*": ["src/user/*"],
+      "@utils/*": ["src/utils/*"],
     }
   }
 }

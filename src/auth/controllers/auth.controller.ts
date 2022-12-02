@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Response, Request } from 'express';
-import { AuthUser } from '../../utils/decorators';
-import { ROUTES } from '../../utils/constants';
+import { AuthUser } from '@utils/decorators';
+import { ROUTES } from '@utils/constants';
 import { AutheticatedGuard, DiscordAuthGuard } from '../utils/Guards';
-import { User } from '../../utils/typeorm/entities/User';
+import { User } from '@utils/typeorm/entities/User';
 import {
     ApiCookieAuth,
     ApiOperation,

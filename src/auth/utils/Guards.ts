@@ -1,8 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { Observable } from 'rxjs';
-import { RoleType } from '../../utils/types';
+import { RoleType } from '@utils/types';
 
 @Injectable()
 export class DiscordAuthGuard extends AuthGuard('discord') {

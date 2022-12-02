@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DbFile } from '../../utils/typeorm/entities/DbFile';
+import { DbFile } from '@utils/typeorm/entities/DbFile';
 import { Repository } from 'typeorm';
 import { IRepositoryService } from '../interfaces/repository';
-import { User } from '../../utils/typeorm/entities/User';
-import { DbFileType } from '../../utils/types';
+import { User } from '@utils/typeorm/entities/User';
+import { DbFileType } from '@utils/types';
 
 import { readFileSync, unlinkSync } from 'fs';
 import { createHash } from 'crypto';
